@@ -1,7 +1,8 @@
-/*
- *	LCD interface example
- *	Uses routines from delay.c
- *	Modified on Feb. 9th, 2011 by Dirk Dubois
+/**
+ *@brief LCD interface example
+*@date Feb. 9th, 2011
+*@author Dirk Dubois
+*@warning Uses routines from delay.c
  *	This code will interface to a standard LCD controller
  *	like the Hitachi HD44780. It uses it in 4 bit mode, with
  *	the hardware connected as follows (the standard 14 pin 
@@ -14,7 +15,6 @@
  *	
  *	To use these routines, set up the port I/O (TRISA, TRISD) then
  *	call lcd_init(), then other routines as required.
- *	
  */
 
 #ifndef _XTAL_FREQ
@@ -22,22 +22,16 @@
  #define _XTAL_FREQ 4000000
 #endif
 
-
+/*Includes*/
 #include	<htc.h>
 #include	"lcd.h"
 
-#define	LCD_RS RA4
-#define	LCD_RW RA6
-#define LCD_EN RA7
-
-#define LCD_DATA	PORTA
-
-#define	LCD_STROBE()	((LCD_EN = 1),(NOP()),(NOP()), (LCD_EN=0))
-
-/* write a byte to the LCD in 4 bit mode */
-
-void
-lcd_write(unsigned char c)
+/**
+*@brief Writes a byte to the LCD in 4-bit mode
+*@param[in] char The byte to be written to the display
+*@retval None
+*/
+void lcd_write(unsigned char c)
 {
 	__delay_us(40);
 	LCD_DATA = ( (( c >> 4 ) & 0x0F) | (0xF0 & LCD_DATA));
@@ -46,52 +40,57 @@ lcd_write(unsigned char c)
 	LCD_STROBE();
 }
 
-/*
- * 	Clear and home the LCD
- */
-
-void
-lcd_clear(void)
+/**
+*@brief Clear and home the LCD
+*@retval None
+*/
+void lcd_clear(void)
 {
 	LCD_RS = 0;
 	lcd_write(0x1);
 	__delay_ms(2);
 }
 
-/* write a string of chars to the LCD */
-
-void
-lcd_puts(const char * s)
+/**
+*@brief Write a string of characters to the LCD
+*@param[in] s The char pointer to the characters to be written to the display
+*@retval None
+*/
+void lcd_puts(const char * s)
 {
 	LCD_RS = 1;	// write characters
 	while(*s)
 		lcd_write(*s++);
 }
 
-/* write one character to the LCD */
-
-void
-lcd_putch(char c)
+/**
+*@brief Writes a character to the LCD screen
+*@param[in] char Writes the character to the screen
+*@retval None
+*/
+void lcd_putch(char c)
 {
 	LCD_RS = 1;	// write characters
 	lcd_write( c );
 }
 
-
-/*
- * Go to the specified position
- */
-
-void
-lcd_goto(unsigned char pos)
+/**
+*@brief Go to the specified position
+*@param[in] pos Move the cursor to the position specified
+*@retval None
+*/
+void lcd_goto(unsigned char pos)
 {
 	LCD_RS = 0;
 	lcd_write(0x80+pos);
 }
 	
-/* initialise the LCD - put into 4 bit mode */
-void
-lcd_init()
+/**
+*@brief Intialize the LCD
+*@retval None
+*@warning This function should be called before anything else
+*/
+void lcd_init()
 {
 	char init_value;
 
