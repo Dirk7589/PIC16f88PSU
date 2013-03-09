@@ -48,7 +48,10 @@ void adcInit(void)
 	ADON = 		1; 			//Turn on the ADC
 }	
 
-//Function that starts the ADC
+/**
+*@brief A function that starts the adc sampling
+*@retval None
+*/
 void adcGo(void)
 {
 	GODONE = 1;
@@ -56,7 +59,12 @@ void adcGo(void)
 	return;
 }	
 
-//A display function that takes a float and displays it to the 2nd line of the LCD
+/**
+*@brief A display function that takes a float and displays it to the 2nd line of the LCD.
+*@param[in] value The value you wish to print to the display
+*@retval None
+*@note This functions uses the lcd library
+*/
 void lcd_Display(float value)
 {
 	lcd_goto(0x40);					//Goto the 2nd line
@@ -67,7 +75,13 @@ void lcd_Display(float value)
 	buffer = ftoa(value, &status);	//Ftoa function that converts the float to a string
 	lcd_puts(buffer);				//Displays the buffer
 	return;
-}			
+}
+
+/**
+*@brief The main function that initalizes the peripherals 
+ and displays the value returned by the adc in volts.
+*@retval None
+*/ 
 void main(void)
 {
 	//Intialization function calls
@@ -82,16 +96,18 @@ void main(void)
 	adcInit();						//ADC setup
 	
 	//Values for the Voltage Meter
-	int i; 							//Width of the Average
-	int low = 0; 					//Low end of the ADC value 
-	int high = 0;					//High end of the ADC value
-	float Vin = 0; 					//To Calculate Vin
-	float Avg;						//To Calculate the average
+	int i; 							/**<Width of the Average*/
+	int low = 0; 					/**<Low end of the ADC value */
+	int high = 0;					/**<High end of the ADC value*/
+	float Vin = 0; 					/**<To Calculate Vin*/
+	float Avg;						/**<To Calculate the average*/
 		
 	//For the duration of the program
 	while(1)
 	{
 		Avg = 0; 					// Clear the average
+		
+		//Take 128 samples for the average
 		for(i=0; i<128; i++)
 		{
 			adcGo();				//Start the ADC
@@ -99,7 +115,7 @@ void main(void)
 			low = 	ADRESL;			//Retrieve the ADC values
 			high = 	ADRESH;
 		
-			high = high << 8; 
+			high = high << 8; 		//Combine the high and low values of the ADC
 			Vin = high + low;
 			
 			Vin = (Vin / 1024) * 5;	//Scale the ADC Values w.r.t +5V
