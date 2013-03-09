@@ -1,6 +1,9 @@
-/*
- *	Delay functions for HI-TECH C on the PIC
- *
+/**
+*@file delay.h
+*@author Dirk Dubois
+*@version 1.0
+*@date Feb 12, 2011
+*@brief Delay functions for HI-TECH C on the PIC
  *	Functions available:
  *		DelayUs(x)	Delay specified number of microseconds
  *		DelayMs(x)	Delay specified number of milliseconds
@@ -26,6 +29,9 @@
 	
  */
 
+ #ifndef __DELAY_H
+ #define __DELAY_H
+ 
 #ifndef	XTAL_FREQ
 #define	XTAL_FREQ	4MHZ		/* Crystal frequency in MHz */
 #endif
@@ -47,5 +53,10 @@
 				  continue; }
 #endif
 
+/**
+*@brief Delay specified number of milliseconds
+*@param[in] cnt The amount of time you wish to delay in milliseconds
+*@retval None
+*/
 extern void DelayMs(unsigned char);
 

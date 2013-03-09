@@ -1,14 +1,20 @@
-/*
- *	Delay functions
- *	See delay.h for details
- *
- *	Make sure this code is compiled with full optimization!!!
- */
+/**
+*@file delay.c
+*@author Dirk Dubois
+*@version 1.0
+*@date Feb 12, 2011
+*@brief A set of delay functions for the pic16f88
+*/
 
-#include	"delay.h"
+/*Includes*/
+#include "delay.h"
 
-void
-DelayMs(unsigned char cnt)
+/**
+*@brief Delay specified number of milliseconds
+*@param[in] cnt The amount of time you wish to delay in milliseconds
+*@retval None
+*/
+void DelayMs(unsigned char cnt)
 {
 #if	XTAL_FREQ <= 2MHZ
 	do {
